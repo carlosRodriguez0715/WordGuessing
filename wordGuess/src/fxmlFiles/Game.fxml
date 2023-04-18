@@ -7,15 +7,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="bgPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" style="-fx-background-color: #00A8A8" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="bgPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" style="-fx-background-color: #00A8A8" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GameController">
    <children>
       <AnchorPane fx:id="subPane" layoutX="20.0" layoutY="30.0" prefHeight="490.0" prefWidth="710.0" style="-fx-background-color: #9E74BE">
          <children>
-            <TextField layoutX="75.0" layoutY="401.0" prefHeight="60.0" prefWidth="560.0" />
-            <ListView layoutX="32.0" layoutY="86.0" prefHeight="225.0" prefWidth="215.0" />
-            <Label layoutX="64.0" layoutY="52.0" text="Guesses for this round:" />
-            <AnchorPane layoutX="271.0" layoutY="39.0" prefHeight="145.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF" />
-            <TextArea editable="false" layoutX="271.0" layoutY="210.0" prefHeight="145.0" prefWidth="425.0" />
+            <TextField fx:id="input" layoutX="75.0" layoutY="401.0" prefHeight="60.0" prefWidth="560.0" />
+            <ListView fx:id="guessingList" layoutX="32.0" layoutY="86.0" prefHeight="225.0" prefWidth="215.0" />
+            <Label fx:id="guessTitle" layoutX="64.0" layoutY="52.0" text="Guesses for this round:" />
+            <AnchorPane fx:id="drawing" layoutX="271.0" layoutY="39.0" prefHeight="145.0" prefWidth="425.0" style="-fx-background-color: #FFFFFF" />
+            <TextArea fx:id="hints" editable="false" layoutX="271.0" layoutY="210.0" prefHeight="145.0" prefWidth="425.0" />
             <Button fx:id="enterBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="576.0" layoutY="402.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="59.0" prefWidth="59.0" />
          </children>
       </AnchorPane>
