@@ -1,8 +1,12 @@
 package controllers;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -10,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class DifficultyController {
 
@@ -54,9 +59,17 @@ public class DifficultyController {
 		return this.difficulty;
 	}
 	
-	@FXML private void startGame() {
+	@FXML private void startGame(ActionEvent evt) {
 		if(this.easy.isSelected() || this.medium.isSelected() || this.hard.isSelected()) {
-			System.out.println("Difficulty: " + this.difficulty);
+			try {
+				AnchorPane root = FXMLLoader.load(getClass().getResource("/fxmlFiles/Game.fxml"));
+				Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.centerOnScreen();
+				stage.show();
+			} catch (IOException e) {
+			}
 		}
 		else {
 			this.alert.show();
