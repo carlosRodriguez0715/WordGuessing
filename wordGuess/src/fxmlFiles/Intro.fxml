@@ -5,22 +5,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="bgPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="bgPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="550.0" style="-fx-background-color: #00A8A8" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.IntroController">
    <children>
-      <AnchorPane fx:id="subPane" layoutX="37.0" layoutY="34.0" prefHeight="232.0" prefWidth="477.0">
+      <AnchorPane fx:id="subPane" layoutX="61.0" layoutY="55.0" prefHeight="190.0" prefWidth="428.0" style="-fx-background-color: #FFFFFF">
          <children>
-            <Button fx:id="exitBtn" layoutX="304.0" layoutY="134.0" mnemonicParsing="false" text="EXIT :(" textFill="WHITE">
+            <Button fx:id="exitBtn" layoutX="243.0" layoutY="116.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #ab0202; -fx-border-color: #630000; -fx-border-width: 10" text="EXIT :(" textFill="WHITE">
                <font>
                   <Font name="Microsoft Sans Serif" size="20.0" />
                </font>
             </Button>
-            <Button fx:id="playBtn" layoutX="82.0" layoutY="134.0" mnemonicParsing="false" text="PLAY!" textFill="WHITE">
+            <Button fx:id="playBtn" layoutX="76.0" layoutY="116.0" mnemonicParsing="false" onAction="#play" style="-fx-background-color: #02b805; -fx-border-color: #006b02; -fx-border-width: 10" text="PLAY!" textFill="WHITE">
                <font>
                   <Font name="Microsoft Sans Serif" size="20.0" />
                </font>
             </Button>
-            <Label fx:id="title" layoutX="69.0" layoutY="39.0" text="GAME: Guess the word" textAlignment="CENTER" textFill="#bd07fa">
+            <Label fx:id="title" layoutX="45.0" layoutY="26.0" text="GAME: Guess the word" textAlignment="CENTER" textFill="#bd07fa">
                <font>
                   <Font name="Comic Sans MS Bold Italic" size="30.0" />
                </font>
