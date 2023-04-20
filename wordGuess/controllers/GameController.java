@@ -1,7 +1,7 @@
 package controllers;
 
 import java.util.Random;
-
+import appFiles.Word;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,7 +10,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 
 public class GameController {
 	@FXML private AnchorPane bgPane, subPane, drawing;
@@ -19,6 +18,11 @@ public class GameController {
 	@FXML private TextArea hints;
 	@FXML private Label guessTitle, attemptsLabel;
 	@FXML private ListView<String> guessingList;
+	private int attemptsLeft;
+	private final int yLineCoord = 100;
+	private final int yLetterCoord = 70;
+	private final int halfLineLength = 10;
+	private Word word;
 	
 	@FXML private void initialize() {
 		this.enterBtn.setStyle("-fx-background-image: url('/other/logo2.png')");
@@ -26,6 +30,7 @@ public class GameController {
 	}
 	
 	private void generateWord() {
+		
 		Random rnd = new Random();
 		int r = rnd.nextInt(12) + 1;
 		int each = 425/(r+1);
@@ -34,11 +39,11 @@ public class GameController {
 			Line line = new Line();
 			Label space = new Label("A");
 			space.setStyle("-fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: ComicSansMS");
-			space.relocate(c-6.5, 70);
-			line.setStartX(c-10);
-			line.setStartY(100);
-			line.setEndX(c+11);
-			line.setEndY(100);
+			space.relocate(c-6.5, yLetterCoord);
+			line.setStartX(c-halfLineLength);
+			line.setStartY(yLineCoord);
+			line.setEndX(c+halfLineLength+1);
+			line.setEndY(yLineCoord);
 			this.drawing.getChildren().add(line);
 			this.drawing.getChildren().add(space);
 			c += each;
