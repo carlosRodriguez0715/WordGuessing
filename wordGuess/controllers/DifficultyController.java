@@ -32,6 +32,7 @@ public class DifficultyController {
 	@FXML private TextArea txtArea;
 	private Alert alert;
 	private char diff;
+	private Word word;
 	
 	@FXML private void initialize() {
 		this.diff = 'E';
@@ -65,10 +66,13 @@ public class DifficultyController {
 	@FXML private void startGame(ActionEvent evt) {
 		if(this.easy.isSelected() || this.medium.isSelected() || this.hard.isSelected()) {
 			try {
-				generateWord(this.diff);
-				AnchorPane root = FXMLLoader.load(getClass().getResource("/fxmlFiles/Game.fxml"));
+				generatedWord(this.diff);
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlFiles/Game.fxml"));
+				AnchorPane root = loader.load();
 				Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
 				Scene scene = new Scene(root);
+				GameController gC = loader.getController();
+				gC.generateWord(this.word);
 				stage.setScene(scene);
 				stage.centerOnScreen();
 				stage.show();
@@ -80,22 +84,21 @@ public class DifficultyController {
 		}
 	}
 	
-	private void generateWord(char diff) {
+	private String generatedWord(char diff) {
 		URL url;
 		Random rnd = new Random();
 		int length = 0;
-		Word generatedWord;
+		Object word = new Object();
 		switch(diff) {
 			case 'E':
 				try {
-					length = rnd.nextInt(5) + 1;
-					url = new URL("https://pokeapi.co/api/v2/pokemon/ditto");
+					length = rnd.nextInt(2) + 3;
+					url = new URL("https://random-word-api.vercel.app/api?words=1&length=" + length);
 					HttpURLConnection con = (HttpURLConnection) url.openConnection();
 					con.setRequestMethod("GET");
 					if(con.getResponseCode() == 200) {
 						Gson gson = new Gson();
-						String s= gson.fromJson(con.getContentType(), String.class);
-						System.out.println(s);
+						word = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
@@ -105,14 +108,13 @@ public class DifficultyController {
 				break;
 			case 'M':
 				try {
-					length = rnd.nextInt(9) + 1;
-					url = new URL("https://pokeapi.co/api/v2/pokemon/ditto");
+					length = rnd.nextInt(2) + 5;
+					url = new URL("https://random-word-api.vercel.app/api?words=1&length=" + length);
 					HttpURLConnection con = (HttpURLConnection) url.openConnection();
 					con.setRequestMethod("GET");
 					if(con.getResponseCode() == 200) {
 						Gson gson = new Gson();
-						String s = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), String.class);
-						System.out.println(s);
+						word = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
@@ -122,14 +124,13 @@ public class DifficultyController {
 				break;
 			case 'H':
 				try {
-					length = rnd.nextInt(12) + 1;
-					url = new URL("https://pokeapi.co/api/v2/pokemon/ditto");
+					length = rnd.nextInt(3) + 7;
+					url = new URL("https://random-word-api.vercel.app/api?words=1&length=" + length);
 					HttpURLConnection con = (HttpURLConnection) url.openConnection();
 					con.setRequestMethod("GET");
 					if(con.getResponseCode() == 200) {
 						Gson gson = new Gson();
-						String s = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), String.class);
-						System.out.println(s);
+						word = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
@@ -138,6 +139,44 @@ public class DifficultyController {
 				}
 				break;
 		}
+		String s = word.toString().replace("[", "").replace("]", "");
+		generateWordInfo(s);
+		return s;
 	}
 	
+	private void generateWordInfo(String s) {
+		try {
+			URL url = new URL("https://api.dictionaryapi.dev/api/v2/entries/en/" + s);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			if(con.getResponseCode() == 200) {
+				Gson gson = new Gson();
+				Object[] obj = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object[].class);
+				String string = obj[0].toString();
+				if(!string.isBlank()) {
+					int word = string.indexOf("word=");
+					int comma = string.indexOf(",");
+					String name = string.substring(word + 5, comma).toUpperCase();
+					string = string.substring(comma + 1, string.length());
+					int part = string.indexOf("partOfSpeech=");
+					string = string.substring(part, string.length());
+					int n = string.indexOf(",");
+					String partOf = string.substring(13, n);
+					int def = string.indexOf("definition=");
+					string = string.substring(def, string.length());
+					string.replaceFirst(", synonyms=", ".");
+					int dot = string.indexOf(".");
+					String meaning = string.substring(11, dot + 1);
+					Word w = new Word(name, partOf, meaning);
+					this.word = w;
+				}
+				else {
+					generateWordInfo(generatedWord(this.diff));
+				}
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+		}
+	}
 }

@@ -6,52 +6,52 @@ public class Word {
 	 * name = word's spelling
 	 * classification = category of the word (verb, adjective, etc)
 	 * meaning = attached meaning. */
-	private String name, classification, meaning;
+	private Object word, partOfSpeech, definition;
 	
 	//Default constructor
 	public Word() {
-		this.name = null;
-		this.classification = null;
-		this.meaning = null;
+		this.word = null;
+		this.partOfSpeech = null;
+		this.definition = null;
 	}
 
 	//Passing arguments for constructor
-	public Word(String name, String classification, String meaning) {
-		this.name = name;
-		this.classification = classification;
-		this.meaning = meaning;
+	public Word(String name, String classification, String definition) {
+		this.word = name;
+		this.partOfSpeech = classification;
+		this.definition = definition;
 	}
 	
 	//Getters
 	public String getName() {
-		return name;
+		return word.toString();
 	}
 
-	public String getClassification() {
-		return classification;
+	public String getPartOfSpeech() {
+		return partOfSpeech.toString();
 	}
 
-	public String getMeaning() {
-		return meaning;
+	public String getDefinition() {
+		return definition.toString();
 	}
 
 	//Setters
 	public void setName(String name) {
-		this.name = name;
+		this.word = name;
 	}
 
-	public void setClassification(String classification) {
-		this.classification = classification;
+	public void setPartOfSpeech(String partOfSpeech) {
+		this.partOfSpeech = partOfSpeech;
 	}
 
-	public void setMeaning(String meaning) {
-		this.meaning = meaning;
+	public void setDefinition(String definition) {
+		this.definition = definition;
 	}
 	
 	//toString
 	@Override
 	public String toString() {
-		return this.name + "(" + this.classification + "): " + this.meaning;
+		return this.word + "(" + this.partOfSpeech + "): " + this.definition;
 	}
 	
 	//equals
@@ -60,6 +60,6 @@ public class Word {
 		if(obj == null || !(obj instanceof Word)) {return false;}
 		if(obj == this) {return true;}
 		Word wordObj = (Word) obj;
-		return this.name.equals(wordObj.name) && this.classification.equals(wordObj.classification) && this.meaning.equals(wordObj.meaning);
+		return this.word.equals(wordObj.word) && this.partOfSpeech.equals(wordObj.partOfSpeech) && this.definition.equals(wordObj.definition);
 	}
 }
