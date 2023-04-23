@@ -72,7 +72,7 @@ public class DifficultyController {
 				Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
 				Scene scene = new Scene(root);
 				GameController gC = loader.getController();
-				gC.generateWord(this.word);
+				gC.generateGame(this.word);
 				stage.setScene(scene);
 				stage.centerOnScreen();
 				stage.show();
@@ -88,7 +88,7 @@ public class DifficultyController {
 		URL url;
 		Random rnd = new Random();
 		int length = 0;
-		Object word = new Object();
+		Object obj = new Object();
 		switch(diff) {
 			case 'E':
 				try {
@@ -98,7 +98,7 @@ public class DifficultyController {
 					con.setRequestMethod("GET");
 					if(con.getResponseCode() == 200) {
 						Gson gson = new Gson();
-						word = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
+						obj = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
@@ -114,7 +114,7 @@ public class DifficultyController {
 					con.setRequestMethod("GET");
 					if(con.getResponseCode() == 200) {
 						Gson gson = new Gson();
-						word = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
+						obj = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
@@ -130,7 +130,7 @@ public class DifficultyController {
 					con.setRequestMethod("GET");
 					if(con.getResponseCode() == 200) {
 						Gson gson = new Gson();
-						word = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
+						obj = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
@@ -139,7 +139,7 @@ public class DifficultyController {
 				}
 				break;
 		}
-		String s = word.toString().replace("[", "").replace("]", "");
+		String s = obj.toString().replace("[", "").replace("]", "");
 		generateWordInfo(s);
 		return s;
 	}
@@ -153,7 +153,7 @@ public class DifficultyController {
 				Gson gson = new Gson();
 				Object[] obj = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object[].class);
 				String string = obj[0].toString();
-				if(!string.isBlank()) {
+				if(!string.isBlank() && obj != null) {
 					int word = string.indexOf("word=");
 					int comma = string.indexOf(",");
 					String name = string.substring(word + 5, comma).toUpperCase();
@@ -170,12 +170,9 @@ public class DifficultyController {
 					Word w = new Word(name, partOf, meaning);
 					this.word = w;
 				}
-				else {
-					generateWordInfo(generatedWord(this.diff));
-				}
 			}
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			generateWordInfo(generatedWord(this.diff));
 		} catch (IOException e) {
 		}
 	}

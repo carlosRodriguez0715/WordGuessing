@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,8 +11,7 @@
    <children>
       <AnchorPane fx:id="subPane" layoutX="20.0" layoutY="30.0" prefHeight="490.0" prefWidth="710.0" style="-fx-background-color: #9E74BE; -fx-background-radius: 20 20 20 20">
          <children>
-            <TextField fx:id="input" layoutX="75.0" layoutY="401.0" prefHeight="60.0" prefWidth="560.0" style="-fx-font-size: 25; -fx-font-family: Lucida Console"/>
-            <ListView fx:id="guessingList" layoutX="32.0" layoutY="86.0" prefHeight="225.0" prefWidth="215.0" />
+            <TextField fx:id="input" layoutX="75.0" layoutY="401.0" prefHeight="60.0" prefWidth="560.0" style="-fx-font-size: 25; -fx-font-family: Lucida Console" />
             <Label fx:id="guessTitle" layoutX="15.0" layoutY="53.0" text="Guesses for this round:" textFill="#d1c304">
                <font>
                   <Font name="Lucida Console" size="18.0" />
@@ -26,8 +24,9 @@
                      </font>
                   </Label>
                </children></AnchorPane>
-            <TextArea fx:id="hints" editable="false" layoutX="271.0" layoutY="210.0" prefHeight="145.0" prefWidth="425.0" />
-            <Button fx:id="enterBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="576.0" layoutY="402.0" mnemonicParsing="false" pickOnBounds="false" prefHeight="59.0" prefWidth="59.0" />
+            <TextArea fx:id="hints" editable="false" layoutX="271.0" layoutY="210.0" prefHeight="145.0" prefWidth="425.0" style="-fx-font-size: 15; -fx-font-family: Verdana" />
+            <Button fx:id="enterBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="576.0" layoutY="402.0" mnemonicParsing="false" onAction="#enterGuess" pickOnBounds="false" prefHeight="59.0" prefWidth="59.0" />
+            <TextArea fx:id="guessingList" editable="false" layoutX="23.0" layoutY="89.0" prefHeight="220.0" prefWidth="227.0" style="-fx-font-size: 15; -fx-font-family: Verdana" />
          </children>
       </AnchorPane>
    </children>
