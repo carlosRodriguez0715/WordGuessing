@@ -56,7 +56,8 @@ public class DifficultyController {
 			this.diff = 'M';
 		}
 		if(evt.getSource() == this.hard) {
-			this.txtArea.setText("HARD MODE: Length of the word to guess \nis long enough to become a real challenge.\nAh, and there is time limit of 3 minutes too.");
+			this.txtArea.setText("HARD MODE: Length of the word to guess\nis long enough to be a real challenge. Ah,\n"
+					+ "and there is time limit of 1:30 minutes too.");
 			this.easy.setSelected(false);
 			this.medium.setSelected(false);
 			this.diff = 'H';

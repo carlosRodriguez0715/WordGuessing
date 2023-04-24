@@ -1,18 +1,16 @@
 package controllers;
 
 import java.io.IOException;
-
 import appFiles.Word;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -33,10 +31,12 @@ public class GameController {
 	private Label[] allLetters;
 	private Alert alert;
 	private boolean hasWon;
+	private Stage stage;
 	
 	@FXML private void initialize() {
 		this.enterBtn.setStyle("-fx-background-image: url('/other/logo2.png')");
 		this.alert = new Alert(AlertType.WARNING);
+		this.stage = new Stage();
 	}
 	
 	public void generateGame(Word word) {
@@ -162,35 +162,21 @@ public class GameController {
 		else {
 			this.attemptsLeft--;
 			this.attemptsLabel.setText("Attempts Left: " + this.attemptsLeft);
+			this.alert.setAlertType(AlertType.INFORMATION);
 			if(this.hasWon) {
-				this.alert.setAlertType(AlertType.INFORMATION);
 				this.alert.setHeaderText("Congratulations, you won!");
-				this.alert.setContentText("Amazing job, you beat the game with " + this.attemptsLeft + " attempts remaining!");
-				this.alert.setTitle("");
-				this.alert.showAndWait();
+				this.alert.setContentText("Amazing job, you beat the game with " + this.attemptsLeft + " attempts remaining!\nClicking on the button returns you to the"
+						+ " main menu\nand not clicking keeps you here forever... FOREVEEEEER...\nunless you close the window yourself.");
 			}
 			else {
-				this.alert.setAlertType(AlertType.INFORMATION);
-				this.alert.setHeaderText("Ran out of attempts, game over!");
+				this.alert.setHeaderText("Ran out of attempts, game over!\nClicking on the button returns you to the main menu,\nand not"
+						+ " clicking keeps you here forever... FOREVEEEER...\n unless you close the window yourself.");
 				this.alert.setContentText("Word was: " + this.word.getName());
-				this.alert.setTitle("");
-				this.alert.showAndWait();
 			}
-		}
-	}
-	
-	private void backToHome() {
-		try {
-			AnchorPane root = FXMLLoader.load(getClass().getResource("/fxmlFiles/Intro.fxml"));
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
+			this.alert.showAndWait();
 			System.exit(0);
-		} catch (IOException e) {
 		}
-	}
-	
+	}	
 	private void checkCompletion() {	
 		String s = "";
 		for(int i=0; i<this.allLetters.length; i++) {
