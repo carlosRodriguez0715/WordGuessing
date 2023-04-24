@@ -33,7 +33,6 @@ public class GameController {
 	private Label[] allLetters;
 	private Alert alert;
 	private boolean hasWon;
-	private String s;
 	
 	@FXML private void initialize() {
 		this.enterBtn.setStyle("-fx-background-image: url('/other/logo2.png')");
@@ -41,7 +40,6 @@ public class GameController {
 	}
 	
 	public void generateGame(Word word) {
-			this.s = "";
 			this.word = word;
 			this.hasWon = false;
 			this.allLetters = new Label[this.word.getName().length()];
@@ -78,8 +76,8 @@ public class GameController {
 				}
 			catch(NumberFormatException e) {
 				String in = this.input.getText().toUpperCase().trim();
-				if((in.length() == 1) || (in.length() == this.allLetters.length)) {
-					if(this.attemptsLeft > 0) {
+				if((in.length() == 1) || (in.length() == this.allLetters.length)){
+					if(this.attemptsLeft > 0 && this.hasWon != true) {
 						if(this.word.getName().contains(in)) {
 							if(in.length() == 1) {
 								for(int i=0; i<this.word.getName().length(); i++) {
@@ -104,13 +102,14 @@ public class GameController {
 							this.guessingList.setText(this.guessingList.getText() + in + "\n");
 						}
 							this.input.setText("");
-							updateAttemptsLabel();
+							checkCompletion();
+							updateAttemptsLabel();	
 						}
-					}
+				}
 				else {
 					this.alert.setAlertType(AlertType.WARNING);
 					this.alert.setHeaderText("Warning!");
-					this.alert.setContentText("Please enter a single letter or the whole word as input,\nnot just texts in between!");
+					this.alert.setContentText("Please enter a single letter or the whole word as input,\nnot just part of the text in between!");
 					this.alert.setTitle("");
 					this.alert.showAndWait();
 				}
@@ -189,6 +188,16 @@ public class GameController {
 			stage.show();
 			System.exit(0);
 		} catch (IOException e) {
+		}
+	}
+	
+	private void checkCompletion() {	
+		String s = "";
+		for(int i=0; i<this.allLetters.length; i++) {
+			s = s + this.allLetters[i].getText();
+		}
+		if(s.equals(this.word.getName())) {
+			this.hasWon = true;
 		}
 	}
 }
