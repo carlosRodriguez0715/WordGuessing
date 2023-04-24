@@ -32,6 +32,8 @@ public class GameController {
 	private Word word;
 	private Label[] allLetters;
 	private Alert alert;
+	private boolean hasWon;
+	private String s;
 	
 	@FXML private void initialize() {
 		this.enterBtn.setStyle("-fx-background-image: url('/other/logo2.png')");
@@ -39,7 +41,9 @@ public class GameController {
 	}
 	
 	public void generateGame(Word word) {
+			this.s = "";
 			this.word = word;
+			this.hasWon = false;
 			this.allLetters = new Label[this.word.getName().length()];
 			int r = this.word.getName().length();
 			int each = 425/(r+1);
@@ -73,19 +77,44 @@ public class GameController {
 				this.alert.show();
 				}
 			catch(NumberFormatException e) {
-				String in = this.input.getText().toUpperCase();
-				if(this.guessingList.getText().isBlank()) {
-					this.guessingList.setText(in + "\n");
-				}
-				else {
+				String in = this.input.getText().toUpperCase().trim();
+				if((in.length() == 1) || (in.length() == this.allLetters.length)) {
 					if(this.attemptsLeft > 0) {
-						this.guessingList.setText(this.guessingList.getText() + in + "\n");
+						if(this.word.getName().contains(in)) {
+							if(in.length() == 1) {
+								for(int i=0; i<this.word.getName().length(); i++) {
+									if(this.word.getName().charAt(i) == in.charAt(0)) {
+										this.allLetters[i].setText("" + in);
+									}
+								}
+							}
+							else if(in.length() > 1) {
+								if(in.equals(this.word.getName())) {
+									for(int i=0; i<in.length(); i++) {
+										this.allLetters[i].setText("" + in.charAt(i));
+									}
+									this.hasWon = true;
+								}	
+							}			
+						}
+						if(this.guessingList.getText().isBlank()) {
+							this.guessingList.setText(in + "\n");
+						}
+						else {
+							this.guessingList.setText(this.guessingList.getText() + in + "\n");
+						}
+							this.input.setText("");
+							updateAttemptsLabel();
+						}
 					}
+				else {
+					this.alert.setAlertType(AlertType.WARNING);
+					this.alert.setHeaderText("Warning!");
+					this.alert.setContentText("Please enter a single letter or the whole word as input,\nnot just texts in between!");
+					this.alert.setTitle("");
+					this.alert.showAndWait();
 				}
-				this.input.setText("");
-				updateAttemptsLabel();
-			}
-			
+			}	
 		}
 	}
 	
@@ -127,16 +156,27 @@ public class GameController {
 	}
 	
 	private void updateAttemptsLabel() {
-		if(this.attemptsLeft > 0) {
+		if(this.attemptsLeft > 1 && !this.hasWon) {
 			this.attemptsLeft--;
 			this.attemptsLabel.setText("Attempts Left: " + this.attemptsLeft);
 		}
 		else {
-			this.alert.setAlertType(AlertType.INFORMATION);
-			this.alert.setHeaderText("Ran out of attempts, game over!");
-			this.alert.setContentText(":(");
-			this.alert.setTitle("");
-			this.alert.showAndWait();
+			this.attemptsLeft--;
+			this.attemptsLabel.setText("Attempts Left: " + this.attemptsLeft);
+			if(this.hasWon) {
+				this.alert.setAlertType(AlertType.INFORMATION);
+				this.alert.setHeaderText("Congratulations, you won!");
+				this.alert.setContentText("Amazing job, you beat the game with " + this.attemptsLeft + " attempts remaining!");
+				this.alert.setTitle("");
+				this.alert.showAndWait();
+			}
+			else {
+				this.alert.setAlertType(AlertType.INFORMATION);
+				this.alert.setHeaderText("Ran out of attempts, game over!");
+				this.alert.setContentText("Word was: " + this.word.getName());
+				this.alert.setTitle("");
+				this.alert.showAndWait();
+			}
 		}
 	}
 	
