@@ -12,7 +12,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			AnchorPane root = FXMLLoader.load(getClass().getResource("/fxmlFiles/Difficulty.fxml"));
+			AnchorPane root = FXMLLoader.load(getClass().getResource("/fxmlFiles/Intro.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("GraxmarMilos's Guessing Game"); 

@@ -33,6 +33,7 @@ public class DifficultyController {
 	private Alert alert;
 	private char diff;
 	private Word word;
+	private boolean isHardMode;
 	
 	@FXML private void initialize() {
 		this.diff = 'E';
@@ -57,7 +58,7 @@ public class DifficultyController {
 		}
 		if(evt.getSource() == this.hard) {
 			this.txtArea.setText("HARD MODE: Length of the word to guess\nis long enough to be a real challenge. Ah,\n"
-					+ "and there is time limit of 1:30 minutes too.");
+					+ "and there is time limit of 70 seconds too.");
 			this.easy.setSelected(false);
 			this.medium.setSelected(false);
 			this.diff = 'H';
@@ -73,7 +74,7 @@ public class DifficultyController {
 				Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
 				Scene scene = new Scene(root);
 				GameController gC = loader.getController();
-				gC.generateGame(this.word);
+				gC.generateGame(this.word, this.isHardMode);
 				stage.setScene(scene);
 				stage.centerOnScreen();
 				stage.show();
@@ -90,6 +91,7 @@ public class DifficultyController {
 		Random rnd = new Random();
 		int length = 0;
 		Object obj = new Object();
+		this.isHardMode = false;
 		switch(diff) {
 			case 'E':
 				try {
@@ -132,6 +134,7 @@ public class DifficultyController {
 					if(con.getResponseCode() == 200) {
 						Gson gson = new Gson();
 						obj = gson.fromJson(new BufferedReader(new InputStreamReader(con.getInputStream())), Object.class);
+						this.isHardMode = true;
 					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();

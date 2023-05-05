@@ -27,6 +27,10 @@
             <TextArea fx:id="hints" editable="false" layoutX="271.0" layoutY="210.0" prefHeight="145.0" prefWidth="425.0" style="-fx-font-size: 15; -fx-font-family: Verdana" />
             <Button fx:id="enterBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="576.0" layoutY="402.0" mnemonicParsing="false" onAction="#enterGuess" pickOnBounds="false" prefHeight="59.0" prefWidth="59.0" />
             <TextArea fx:id="guessingList" editable="false" layoutX="23.0" layoutY="89.0" prefHeight="220.0" prefWidth="227.0" style="-fx-font-size: 15; -fx-font-family: Verdana" />
+            <Label fx:id="timerLabel" layoutX="57.0" layoutY="317.0" prefHeight="76.0" prefWidth="166.0" textAlignment="CENTER" textFill="#d1c304">
+               <font>
+                  <Font name="Lucida Console" size="18.0" />
+               </font></Label>
          </children>
       </AnchorPane>
    </children>

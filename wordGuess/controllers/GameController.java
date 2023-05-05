@@ -1,47 +1,46 @@
 package controllers;
 
-import java.io.IOException;
 import appFiles.Word;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
-import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class GameController {
 	@FXML private AnchorPane bgPane, subPane, drawing;
 	@FXML private Button enterBtn;
 	@FXML private TextField input;
 	@FXML private TextArea hints, guessingList;
-	@FXML private Label guessTitle, attemptsLabel;
+	@FXML private Label guessTitle, attemptsLabel, timerLabel;
 	private int attemptsLeft;
 	private final int yLineCoord = 100;
 	private final int yLetterCoord = 70;
 	private final int halfLineLength = 10;
+	private int time = 70;
 	private Word word;
 	private Label[] allLetters;
 	private Alert alert;
-	private boolean hasWon;
-	private Stage stage;
+	private boolean hasWon, hasTime;
 	
 	@FXML private void initialize() {
 		this.enterBtn.setStyle("-fx-background-image: url('/other/logo2.png')");
 		this.alert = new Alert(AlertType.WARNING);
-		this.stage = new Stage();
 	}
 	
-	public void generateGame(Word word) {
+	public void generateGame(Word word, boolean aTimer) {
 			this.word = word;
 			this.hasWon = false;
+			this.hasTime = aTimer;
 			this.allLetters = new Label[this.word.getName().length()];
 			int r = this.word.getName().length();
 			int each = 425/(r+1);
@@ -62,6 +61,14 @@ public class GameController {
 			}
 			loadHints();
 			loadAttempts();
+			if(this.hasTime == true) {
+				this.timerLabel.setText("Time Left: " + this.time);
+				this.timerLabel.setVisible(true);
+				this.showTimerLabel();
+			}
+			else {
+				this.timerLabel.setVisible(false);
+			}
 	}
 	
 	@FXML private void enterGuess(ActionEvent evt) {
@@ -165,12 +172,17 @@ public class GameController {
 			this.alert.setAlertType(AlertType.INFORMATION);
 			if(this.hasWon) {
 				this.alert.setHeaderText("Congratulations, you won!");
-				this.alert.setContentText("Amazing job, you beat the game with " + this.attemptsLeft + " attempts remaining!\nClicking on the button returns you to the"
-						+ " main menu\nand not clicking keeps you here forever... FOREVEEEEER...\nunless you close the window yourself.");
+				if(this.hasTime) {
+					this.alert.setContentText("Amazing job, you beat the game with " + this.attemptsLeft + " attempts remaining and with " + 
+							this.time + " seconds left!" + "!\nClosing game now.");
+				}
+				else {
+					this.alert.setContentText("Amazing job, you beat the game with " + this.attemptsLeft + " attempts remaining. Closing game now!");
+				}
+				
 			}
 			else {
-				this.alert.setHeaderText("Ran out of attempts, game over!\nClicking on the button returns you to the main menu,\nand not"
-						+ " clicking keeps you here forever... FOREVEEEER...\n unless you close the window yourself.");
+				this.alert.setHeaderText("Ran out of attempts, game over!\nClosing game now.");
 				this.alert.setContentText("Word was: " + this.word.getName());
 			}
 			this.alert.showAndWait();
@@ -186,4 +198,32 @@ public class GameController {
 			this.hasWon = true;
 		}
 	}
+	
+	public void showTimerLabel() {
+		Timeline t = new Timeline();
+		t.setCycleCount(Timeline.INDEFINITE);
+		if(t != null) {
+			t.stop();
+		}
+		KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				time--;
+				timerLabel.setText("Time Left: " + time);
+				if(time <= 0 || hasWon || attemptsLeft == 0) {
+					t.stop();
+				}
+			}
+		});
+		t.getKeyFrames().add(frame);
+		t.playFromStart();
+		if(this.time <= 0) {
+			alert.setHeaderText("BAD LUCK!!!!");
+			alert.setContentText("Ran out of time with " + attemptsLeft + " attempts remaining " + ".\n Word was: " + this.word.getName() + "! Closing game now.");
+			alert.show();
+			System.exit(0);
+		}
+	}
+	
 }
